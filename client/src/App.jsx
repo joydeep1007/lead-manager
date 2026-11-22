@@ -101,10 +101,10 @@ function App() {
   const displayError = actionError || error;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-950 text-white">
       <Navbar />
 
-      <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-6xl space-y-6 px-6 py-8">
         <StatsBar stats={stats} />
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -119,7 +119,7 @@ function App() {
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
+            className="rounded-lg bg-indigo-600 px-5 py-2 font-medium text-white transition-colors hover:bg-indigo-500"
           >
             Add Lead
           </button>
@@ -128,14 +128,14 @@ function App() {
         {displayError && (
           <div
             role="alert"
-            className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+            className="rounded-lg border border-red-900 bg-red-900/20 px-4 py-3 text-sm text-red-300"
           >
             {displayError}
           </div>
         )}
 
         {loading ? (
-          <div className="rounded-xl border border-gray-200 bg-white px-6 py-12 text-center text-sm text-gray-500 shadow-sm">
+          <div className="rounded-xl border border-gray-800 bg-gray-900 px-6 py-16 text-center text-gray-500">
             Loading leads...
           </div>
         ) : (

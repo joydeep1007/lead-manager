@@ -2,20 +2,20 @@ const LEAD_STATUSES = ['New', 'Contacted', 'Qualified', 'Lost'];
 
 function SearchFilterBar({ search, onSearchChange, statusFilter, onStatusChange }) {
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+    <div className="mb-4 flex flex-col gap-3 sm:flex-row">
       <input
         type="text"
         value={search}
         onChange={(e) => onSearchChange(e.target.value)}
         placeholder="Search by name or email…"
         aria-label="Search leads"
-        className="w-full flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+        className="flex-1 rounded-lg border border-gray-700 bg-gray-900 px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
       />
       <select
         value={statusFilter}
         onChange={(e) => onStatusChange(e.target.value)}
         aria-label="Filter by status"
-        className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 sm:w-48"
+        className="rounded-lg border border-gray-700 bg-gray-900 px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:w-48"
       >
         <option value="">All Statuses</option>
         {LEAD_STATUSES.map((status) => (
