@@ -1,10 +1,7 @@
-import { ChartBarIcon, FunnelIcon, SettingsIcon, UsersIcon } from './icons';
+import { UsersIcon } from './icons';
 
 const NAV_ITEMS = [
   { key: 'leads', label: 'Leads', icon: UsersIcon, active: true },
-  { key: 'pipeline', label: 'Pipeline', icon: FunnelIcon, active: false },
-  { key: 'analytics', label: 'Analytics', icon: ChartBarIcon, active: false },
-  { key: 'settings', label: 'Settings', icon: SettingsIcon, active: false },
 ];
 
 function Navbar({ onLogout }) {
