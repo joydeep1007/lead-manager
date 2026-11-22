@@ -5,7 +5,7 @@ const SAMPLE_LEADS = [
   {
     name: 'Sarah Chen',
     email: 'sarah.chen@acmelogistics.com',
-    phone: '+1 (415) 555-0142',
+    phone: '+91 9876543210',
     company: 'Acme Logistics',
     source: 'Website',
     status: 'New',
@@ -13,7 +13,7 @@ const SAMPLE_LEADS = [
   {
     name: 'Marcus Vance',
     email: 'mvance@northstarcloud.io',
-    phone: '+1 (206) 555-0198',
+    phone: '+91 1234567890',
     company: 'Northstar Cloud',
     source: 'Referral',
     status: 'Qualified',
@@ -21,7 +21,7 @@ const SAMPLE_LEADS = [
   {
     name: 'Elena Rostova',
     email: 'elena@veridianhealth.com',
-    phone: '+1 (312) 555-0174',
+    phone: '+91 1122334455',
     company: 'Veridian Health',
     source: 'Cold Call',
     status: 'Contacted',
@@ -29,7 +29,7 @@ const SAMPLE_LEADS = [
   {
     name: 'David Kim',
     email: 'dkim@finpulse.co',
-    phone: '+1 (646) 555-0115',
+    phone: '+91 6465550115',
     company: 'FinPulse',
     source: 'Social',
     status: 'New',
@@ -37,7 +37,7 @@ const SAMPLE_LEADS = [
   {
     name: 'Priya Nair',
     email: 'priya.nair@kinetixai.dev',
-    phone: '+1 (512) 555-0163',
+    phone: '+91 5125550163',
     company: 'Kinetix AI',
     source: 'Website',
     status: 'Qualified',
@@ -45,7 +45,7 @@ const SAMPLE_LEADS = [
   {
     name: 'Liam OConnor',
     email: 'liam@harborfreighttech.com',
-    phone: '+1 (617) 555-0181',
+    phone: '+91 6175550181',
     company: 'Harbor Freight Tech',
     source: 'Referral',
     status: 'Contacted',
@@ -53,7 +53,7 @@ const SAMPLE_LEADS = [
   {
     name: 'Hannah Abbott',
     email: 'hannah@bluepeak.org',
-    phone: '+1 (303) 555-0129',
+    phone: '+91 3035550129',
     company: 'BluePeak Systems',
     source: 'Other',
     status: 'Lost',
@@ -61,7 +61,7 @@ const SAMPLE_LEADS = [
   {
     name: 'Carlos Mendez',
     email: 'cmendez@solarisenergy.com',
-    phone: '+1 (713) 555-0156',
+    phone: '+91 7135550156',
     company: 'Solaris Energy',
     source: 'Website',
     status: 'New',
@@ -69,7 +69,7 @@ const SAMPLE_LEADS = [
   {
     name: 'Rachel Green',
     email: 'rachel@brightpath.edu',
-    phone: '+1 (404) 555-0137',
+    phone: '+91 4045550137',
     company: 'BrightPath Learning',
     source: 'Social',
     status: 'Contacted',
@@ -77,7 +77,7 @@ const SAMPLE_LEADS = [
   {
     name: 'Noah Patel',
     email: 'noah.patel@crestlineops.com',
-    phone: '+1 (650) 555-0188',
+    phone: '+91 6505550188',
     company: 'Crestline Ops',
     source: 'Cold Call',
     status: 'Lost',
