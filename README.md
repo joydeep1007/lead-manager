@@ -107,3 +107,21 @@ Open `http://localhost:5173`, register an account, and sign in to start managing
 ## 7. Live Demo
 
 https://lead-manager-steel.vercel.app/
+
+## 8. Note: Assigning Seeded Leads to Your First User
+
+The `npm run seed` script (in `server/`) inserts sample leads directly into the database without a `user_id`, since seeding runs independently of registration. Because every `/api/leads` route is scoped to `WHERE user_id = req.userId`, these seeded leads won't show up for any account until they're assigned to a user.
+
+To link the seeded leads to your first registered account:
+
+1. Register an account through the UI (`http://localhost:5173`) so a row exists in the `users` table.
+2. From `server/`, run the following one-off script to assign all unowned leads to the first user:
+
+   ```bash
+   cd server
+   node -e "require('dotenv').config(); const db = require('./db'); const user = db.prepare('SELECT id, email FROM users ORDER BY id ASC LIMIT 1').get(); if (!user) { console.log('No user found. Register first.'); process.exit(1); } const res = db.prepare('UPDATE leads SET user_id = ? WHERE user_id IS NULL').run(user.id); console.log('Assigned', res.changes, 'leads to', user.email);"
+   ```
+
+3. Refresh the client — the seeded leads and stats will now appear for that user.
+
+To target a specific account instead of the first registered user, replace `ORDER BY id ASC LIMIT 1` with `WHERE email = 'your@email.com'`.
