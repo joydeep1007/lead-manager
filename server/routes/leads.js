@@ -1,5 +1,6 @@
 const express = require('express');
 const db = require('../db');
+const auth = require('../middleware/auth');
 const validateLead = require('../middleware/validateLead');
 
 const { LEAD_SOURCES, LEAD_STATUSES } = validateLead;
@@ -7,10 +8,14 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const router = express.Router();
 
+router.use(auth);
+
 // Defined before /:id routes so Express does not treat "stats" as an id param
 router.get('/stats', (req, res, next) => {
   try {
-    const rows = db.prepare('SELECT status, COUNT(*) as count FROM leads GROUP BY status').all();
+    const rows = db
+      .prepare('SELECT status, COUNT(*) as count FROM leads WHERE user_id = ? GROUP BY status')
+      .all(req.userId);
     const stats = Object.fromEntries(LEAD_STATUSES.map((status) => [status, 0]));
 
     for (const row of rows) {
@@ -30,8 +35,8 @@ router.get('/', (req, res, next) => {
     const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
     const status = typeof req.query.status === 'string' ? req.query.status.trim() : '';
 
-    const conditions = [];
-    const params = [];
+    const conditions = ['user_id = ?'];
+    const params = [req.userId];
 
     if (search) {
       conditions.push('(name LIKE ? OR email LIKE ?)');
@@ -44,7 +49,7 @@ router.get('/', (req, res, next) => {
       params.push(status);
     }
 
-    const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+    const whereClause = `WHERE ${conditions.join(' AND ')}`;
     const sql = `SELECT * FROM leads ${whereClause} ORDER BY created_at DESC`;
     const leads = db.prepare(sql).all(...params);
 
@@ -60,12 +65,14 @@ router.post('/', validateLead, (req, res, next) => {
 
     const result = db
       .prepare(
-        `INSERT INTO leads (name, email, phone, company, source, status, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))`
+        `INSERT INTO leads (user_id, name, email, phone, company, source, status, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))`
       )
-      .run(name.trim(), email.trim(), phone ?? null, company ?? null, source, status);
+      .run(req.userId, name.trim(), email.trim(), phone ?? null, company ?? null, source, status);
 
-    const lead = db.prepare('SELECT * FROM leads WHERE id = ?').get(result.lastInsertRowid);
+    const lead = db
+      .prepare('SELECT * FROM leads WHERE id = ? AND user_id = ?')
+      .get(result.lastInsertRowid, req.userId);
     res.status(201).json(lead);
   } catch (err) {
     next(err);
@@ -75,7 +82,9 @@ router.post('/', validateLead, (req, res, next) => {
 router.put('/:id', (req, res, next) => {
   try {
     const { id } = req.params;
-    const existing = db.prepare('SELECT * FROM leads WHERE id = ?').get(id);
+    const existing = db
+      .prepare('SELECT * FROM leads WHERE id = ? AND user_id = ?')
+      .get(id, req.userId);
 
     if (!existing) {
       return res.status(404).json({ error: 'Lead not found' });
@@ -115,11 +124,13 @@ router.put('/:id', (req, res, next) => {
     }
 
     updates.push("updated_at = datetime('now')");
-    params.push(id);
+    params.push(id, req.userId);
 
-    db.prepare(`UPDATE leads SET ${updates.join(', ')} WHERE id = ?`).run(...params);
+    db.prepare(`UPDATE leads SET ${updates.join(', ')} WHERE id = ? AND user_id = ?`).run(...params);
 
-    const updated = db.prepare('SELECT * FROM leads WHERE id = ?').get(id);
+    const updated = db
+      .prepare('SELECT * FROM leads WHERE id = ? AND user_id = ?')
+      .get(id, req.userId);
     return res.json(updated);
   } catch (err) {
     return next(err);
@@ -128,7 +139,9 @@ router.put('/:id', (req, res, next) => {
 
 router.delete('/:id', (req, res, next) => {
   try {
-    const result = db.prepare('DELETE FROM leads WHERE id = ?').run(req.params.id);
+    const result = db
+      .prepare('DELETE FROM leads WHERE id = ? AND user_id = ?')
+      .run(req.params.id, req.userId);
 
     if (result.changes === 0) {
       return res.status(404).json({ error: 'Lead not found' });

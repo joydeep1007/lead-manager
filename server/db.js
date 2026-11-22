@@ -21,6 +21,7 @@ db.exec(`
 
   CREATE TABLE IF NOT EXISTS leads (
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id    INTEGER REFERENCES users(id),
     name       TEXT NOT NULL,
     email      TEXT NOT NULL,
     phone      TEXT,
@@ -34,5 +35,11 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_leads_status ON leads(status);
   CREATE INDEX IF NOT EXISTS idx_leads_name   ON leads(name);
 `);
+
+const leadColumns = db.prepare("PRAGMA table_info('leads')").all();
+if (!leadColumns.some((col) => col.name === 'user_id')) {
+  db.exec('ALTER TABLE leads ADD COLUMN user_id INTEGER REFERENCES users(id)');
+}
+db.exec('CREATE INDEX IF NOT EXISTS idx_leads_user_id ON leads(user_id)');
 
 module.exports = db;

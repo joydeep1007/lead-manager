@@ -8,8 +8,9 @@ import Navbar from './components/Navbar';
 import SearchFilterBar from './components/SearchFilterBar';
 import StatsBar from './components/StatsBar';
 import { useLeads } from './hooks/useLeads';
+import AuthPage from './pages/AuthPage';
 
-function App() {
+function Dashboard({ onLogout }) {
   const {
     leads,
     loading,
@@ -103,7 +104,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
-      <Navbar />
+      <Navbar onLogout={onLogout} />
 
       <main className="mx-auto max-w-6xl space-y-5 px-4 py-6 sm:px-6 lg:px-8">
         <div>
@@ -169,6 +170,25 @@ function App() {
       />
     </div>
   );
+}
+
+function App() {
+  const [token, setToken] = useState(() => localStorage.getItem('lead_token'));
+
+  const handleAuthSuccess = (newToken) => {
+    setToken(newToken);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('lead_token');
+    setToken(null);
+  };
+
+  if (!token) {
+    return <AuthPage onAuthSuccess={handleAuthSuccess} />;
+  }
+
+  return <Dashboard onLogout={handleLogout} />;
 }
 
 export default App;
