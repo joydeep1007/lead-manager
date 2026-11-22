@@ -3,7 +3,7 @@ import { getLeads } from '../api/leadsApi';
 
 export function useLeads() {
   const [leads, setLeads] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -22,8 +22,23 @@ export function useLeads() {
   }, [search, statusFilter]);
 
   useEffect(() => {
-    refresh();
-  }, [refresh]);
+    let cancelled = false;
+
+    getLeads(search, statusFilter)
+      .then((data) => {
+        if (!cancelled) setLeads(data);
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err.message || 'Failed to fetch leads');
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [search, statusFilter]);
 
   return {
     leads,
