@@ -1,20 +1,23 @@
 const STAT_CARDS = [
-  { key: 'New', label: 'New', countClass: 'text-blue-400' },
-  { key: 'Contacted', label: 'Contacted', countClass: 'text-yellow-400' },
-  { key: 'Qualified', label: 'Qualified', countClass: 'text-green-400' },
-  { key: 'Lost', label: 'Lost', countClass: 'text-red-400' },
+  { key: 'New', label: 'New', dotClass: 'bg-blue-500' },
+  { key: 'Contacted', label: 'Contacted', dotClass: 'bg-yellow-500' },
+  { key: 'Qualified', label: 'Qualified', dotClass: 'bg-green-500' },
+  { key: 'Lost', label: 'Lost', dotClass: 'bg-red-500' },
 ];
 
 function StatsBar({ stats }) {
   return (
-    <div className="grid grid-cols-2 gap-4 mb-6 md:grid-cols-4">
-      {STAT_CARDS.map(({ key, label, countClass }) => (
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      {STAT_CARDS.map(({ key, label, dotClass }) => (
         <div
           key={key}
-          className="flex flex-col gap-1 rounded-xl border border-gray-800 bg-gray-900 px-6 py-4"
+          className="flex flex-col gap-1.5 rounded-lg border border-gray-200 bg-white px-4 py-3"
         >
-          <span className="text-sm font-medium text-gray-400">{label}</span>
-          <p className={`text-3xl font-bold ${countClass}`}>
+          <div className="flex items-center gap-1.5">
+            <span className={`h-1.5 w-1.5 rounded-full ${dotClass}`} aria-hidden="true" />
+            <span className="text-xs font-medium text-gray-500">{label}</span>
+          </div>
+          <p className="tabular-nums text-2xl font-semibold text-gray-900">
             {stats?.[key] ?? 0}
           </p>
         </div>

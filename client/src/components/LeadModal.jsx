@@ -107,22 +107,22 @@ function LeadModalContent({ onClose, onSave, initialData }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 p-4"
       onClick={handleBackdropClick}
       role="dialog"
       aria-modal="true"
       aria-labelledby="lead-modal-title"
     >
-      <div className="w-full max-w-md rounded-2xl border border-gray-700 bg-gray-900 p-6 shadow-2xl">
+      <div className="w-full max-w-md rounded-lg border border-gray-200 bg-white p-6 shadow-lg">
         <div className="mb-4 flex items-center justify-between">
-          <h2 id="lead-modal-title" className="text-lg font-semibold text-white">
+          <h2 id="lead-modal-title" className="text-base font-semibold text-gray-900">
             {isEditMode ? 'Edit Lead' : 'Add Lead'}
           </h2>
           <button
             type="button"
             onClick={onClose}
             disabled={saving}
-            className="rounded-lg p-1 text-gray-400 hover:text-white disabled:opacity-50"
+            className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:opacity-50"
             aria-label="Close modal"
           >
             ✕
@@ -131,8 +131,8 @@ function LeadModalContent({ onClose, onSave, initialData }) {
 
         <div className="space-y-4">
           <div>
-            <label htmlFor="lead-name" className="mb-1 block text-sm text-gray-400">
-              Name <span className="text-red-400">*</span>
+            <label htmlFor="lead-name" className="mb-1 block text-sm font-medium text-gray-700">
+              Name <span className="text-red-500">*</span>
             </label>
             <input
               id="lead-name"
@@ -141,14 +141,18 @@ function LeadModalContent({ onClose, onSave, initialData }) {
               onChange={handleChange('name')}
               disabled={saving}
               placeholder="Jane Doe"
-              className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`w-full rounded-lg border bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 ${
+                errors.name
+                  ? 'border-red-300 focus:border-red-400 focus:ring-red-500/20'
+                  : 'border-gray-300 focus:border-indigo-400 focus:ring-indigo-500/20'
+              }`}
             />
-            {errors.name && <p className="mt-1 text-xs text-red-400">{errors.name}</p>}
+            {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
           </div>
 
           <div>
-            <label htmlFor="lead-email" className="mb-1 block text-sm text-gray-400">
-              Email <span className="text-red-400">*</span>
+            <label htmlFor="lead-email" className="mb-1 block text-sm font-medium text-gray-700">
+              Email <span className="text-red-500">*</span>
             </label>
             <input
               id="lead-email"
@@ -157,14 +161,18 @@ function LeadModalContent({ onClose, onSave, initialData }) {
               onChange={handleChange('email')}
               disabled={saving}
               placeholder="jane@company.com"
-              className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`w-full rounded-lg border bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 ${
+                errors.email
+                  ? 'border-red-300 focus:border-red-400 focus:ring-red-500/20'
+                  : 'border-gray-300 focus:border-indigo-400 focus:ring-indigo-500/20'
+              }`}
             />
-            {errors.email && <p className="mt-1 text-xs text-red-400">{errors.email}</p>}
+            {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label htmlFor="lead-phone" className="mb-1 block text-sm text-gray-400">
+              <label htmlFor="lead-phone" className="mb-1 block text-sm font-medium text-gray-700">
                 Phone
               </label>
               <input
@@ -174,12 +182,12 @@ function LeadModalContent({ onClose, onSave, initialData }) {
                 onChange={handleChange('phone')}
                 disabled={saving}
                 placeholder="+1 (555) 123-4567"
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
               />
             </div>
 
             <div>
-              <label htmlFor="lead-company" className="mb-1 block text-sm text-gray-400">
+              <label htmlFor="lead-company" className="mb-1 block text-sm font-medium text-gray-700">
                 Company
               </label>
               <input
@@ -189,14 +197,14 @@ function LeadModalContent({ onClose, onSave, initialData }) {
                 onChange={handleChange('company')}
                 disabled={saving}
                 placeholder="Acme Inc."
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label htmlFor="lead-source" className="mb-1 block text-sm text-gray-400">
+              <label htmlFor="lead-source" className="mb-1 block text-sm font-medium text-gray-700">
                 Source
               </label>
               <select
@@ -204,7 +212,11 @@ function LeadModalContent({ onClose, onSave, initialData }) {
                 value={formData.source}
                 onChange={handleChange('source')}
                 disabled={saving}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className={`w-full rounded-lg border bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 ${
+                  errors.source
+                    ? 'border-red-300 focus:border-red-400 focus:ring-red-500/20'
+                    : 'border-gray-300 focus:border-indigo-400 focus:ring-indigo-500/20'
+                }`}
               >
                 {LEAD_SOURCES.map((source) => (
                   <option key={source} value={source}>
@@ -212,11 +224,11 @@ function LeadModalContent({ onClose, onSave, initialData }) {
                   </option>
                 ))}
               </select>
-              {errors.source && <p className="mt-1 text-xs text-red-400">{errors.source}</p>}
+              {errors.source && <p className="mt-1 text-xs text-red-600">{errors.source}</p>}
             </div>
 
             <div>
-              <label htmlFor="lead-status" className="mb-1 block text-sm text-gray-400">
+              <label htmlFor="lead-status" className="mb-1 block text-sm font-medium text-gray-700">
                 Status
               </label>
               <select
@@ -224,7 +236,11 @@ function LeadModalContent({ onClose, onSave, initialData }) {
                 value={formData.status}
                 onChange={handleChange('status')}
                 disabled={saving}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className={`w-full rounded-lg border bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 ${
+                  errors.status
+                    ? 'border-red-300 focus:border-red-400 focus:ring-red-500/20'
+                    : 'border-gray-300 focus:border-indigo-400 focus:ring-indigo-500/20'
+                }`}
               >
                 {LEAD_STATUSES.map((status) => (
                   <option key={status} value={status}>
@@ -232,7 +248,7 @@ function LeadModalContent({ onClose, onSave, initialData }) {
                   </option>
                 ))}
               </select>
-              {errors.status && <p className="mt-1 text-xs text-red-400">{errors.status}</p>}
+              {errors.status && <p className="mt-1 text-xs text-red-600">{errors.status}</p>}
             </div>
           </div>
         </div>
@@ -242,7 +258,7 @@ function LeadModalContent({ onClose, onSave, initialData }) {
             type="button"
             onClick={onClose}
             disabled={saving}
-            className="rounded-lg px-4 py-2 text-sm text-gray-400 transition-colors hover:text-white disabled:opacity-50"
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:opacity-50"
           >
             Cancel
           </button>

@@ -1,0 +1,106 @@
+require('dotenv').config();
+const db = require('./db');
+
+const SAMPLE_LEADS = [
+  {
+    name: 'Sarah Chen',
+    email: 'sarah.chen@acmelogistics.com',
+    phone: '+1 (415) 555-0142',
+    company: 'Acme Logistics',
+    source: 'Website',
+    status: 'New',
+  },
+  {
+    name: 'Marcus Vance',
+    email: 'mvance@northstarcloud.io',
+    phone: '+1 (206) 555-0198',
+    company: 'Northstar Cloud',
+    source: 'Referral',
+    status: 'Qualified',
+  },
+  {
+    name: 'Elena Rostova',
+    email: 'elena@veridianhealth.com',
+    phone: '+1 (312) 555-0174',
+    company: 'Veridian Health',
+    source: 'Cold Call',
+    status: 'Contacted',
+  },
+  {
+    name: 'David Kim',
+    email: 'dkim@finpulse.co',
+    phone: '+1 (646) 555-0115',
+    company: 'FinPulse',
+    source: 'Social',
+    status: 'New',
+  },
+  {
+    name: 'Priya Nair',
+    email: 'priya.nair@kinetixai.dev',
+    phone: '+1 (512) 555-0163',
+    company: 'Kinetix AI',
+    source: 'Website',
+    status: 'Qualified',
+  },
+  {
+    name: 'Liam OConnor',
+    email: 'liam@harborfreighttech.com',
+    phone: '+1 (617) 555-0181',
+    company: 'Harbor Freight Tech',
+    source: 'Referral',
+    status: 'Contacted',
+  },
+  {
+    name: 'Hannah Abbott',
+    email: 'hannah@bluepeak.org',
+    phone: '+1 (303) 555-0129',
+    company: 'BluePeak Systems',
+    source: 'Other',
+    status: 'Lost',
+  },
+  {
+    name: 'Carlos Mendez',
+    email: 'cmendez@solarisenergy.com',
+    phone: '+1 (713) 555-0156',
+    company: 'Solaris Energy',
+    source: 'Website',
+    status: 'New',
+  },
+  {
+    name: 'Rachel Green',
+    email: 'rachel@brightpath.edu',
+    phone: '+1 (404) 555-0137',
+    company: 'BrightPath Learning',
+    source: 'Social',
+    status: 'Contacted',
+  },
+  {
+    name: 'Noah Patel',
+    email: 'noah.patel@crestlineops.com',
+    phone: '+1 (650) 555-0188',
+    company: 'Crestline Ops',
+    source: 'Cold Call',
+    status: 'Lost',
+  },
+];
+
+const { count } = db.prepare('SELECT COUNT(*) AS count FROM leads').get();
+
+if (count > 0 && !process.argv.includes('--force')) {
+  console.log(`Database already has ${count} lead(s). Skipping seed (pass --force to add anyway).`);
+  process.exit(0);
+}
+
+const insert = db.prepare(
+  `INSERT INTO leads (name, email, phone, company, source, status, created_at, updated_at)
+   VALUES (@name, @email, @phone, @company, @source, @status, datetime('now'), datetime('now'))`
+);
+
+const insertMany = db.transaction((leads) => {
+  for (const lead of leads) {
+    insert.run(lead);
+  }
+});
+
+insertMany(SAMPLE_LEADS);
+console.log(`Seeded ${SAMPLE_LEADS.length} leads into the database.`);

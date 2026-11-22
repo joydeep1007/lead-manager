@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { createLead, deleteLead, getStats, updateLead } from './api/leadsApi';
 import ConfirmDialog from './components/ConfirmDialog';
+import { PlusIcon } from './components/icons';
 import LeadModal from './components/LeadModal';
 import LeadsTable from './components/LeadsTable';
 import Navbar from './components/Navbar';
@@ -101,26 +102,32 @@ function App() {
   const displayError = actionError || error;
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
+    <div className="min-h-screen bg-gray-50 text-gray-900">
       <Navbar />
 
-      <main className="mx-auto max-w-6xl space-y-6 px-6 py-8">
+      <main className="mx-auto max-w-6xl space-y-5 px-4 py-6 sm:px-6 lg:px-8">
+        <div>
+          <h1 className="text-xl font-semibold text-gray-900">Leads</h1>
+          <p className="mt-0.5 text-sm text-gray-500">
+            Manage and track your sales pipeline
+          </p>
+        </div>
+
         <StatsBar stats={stats} />
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex-1">
-            <SearchFilterBar
-              search={search}
-              onSearchChange={setSearch}
-              statusFilter={statusFilter}
-              onStatusChange={setStatusFilter}
-            />
-          </div>
+          <SearchFilterBar
+            search={search}
+            onSearchChange={setSearch}
+            statusFilter={statusFilter}
+            onStatusChange={setStatusFilter}
+          />
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="rounded-lg bg-indigo-600 px-5 py-2 font-medium text-white transition-colors hover:bg-indigo-500"
+            className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-1.5 text-sm font-medium text-white transition-colors hover:bg-indigo-500 sm:shrink-0"
           >
+            <PlusIcon className="h-4 w-4" />
             Add Lead
           </button>
         </div>
@@ -128,23 +135,19 @@ function App() {
         {displayError && (
           <div
             role="alert"
-            className="rounded-lg border border-red-900 bg-red-900/20 px-4 py-3 text-sm text-red-300"
+            className="rounded-lg border border-red-200 bg-red-50 px-3.5 py-2.5 text-sm text-red-700"
           >
             {displayError}
           </div>
         )}
 
-        {loading ? (
-          <div className="rounded-xl border border-gray-800 bg-gray-900 px-6 py-16 text-center text-gray-500">
-            Loading leads...
-          </div>
-        ) : (
-          <LeadsTable
-            leads={leads}
-            onEdit={handleOpenEdit}
-            onDelete={handleRequestDelete}
-          />
-        )}
+        <LeadsTable
+          leads={leads}
+          loading={loading}
+          onEdit={handleOpenEdit}
+          onDelete={handleRequestDelete}
+          onAdd={handleOpenAdd}
+        />
       </main>
 
       <LeadModal

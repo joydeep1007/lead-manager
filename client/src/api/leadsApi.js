@@ -13,7 +13,9 @@ async function request(path, options = {}) {
     headers,
   });
 
-  const data = await res.json().catch(() => null);
+    const contentType = res.headers.get('content-type') || '';
+    const isJson = contentType.includes('application/json');
+    const data = isJson ? await res.json().catch(() => null) : null;
 
   if (!res.ok) {
     const message =
@@ -22,6 +24,12 @@ async function request(path, options = {}) {
       `Request failed with status ${res.status}`;
     throw new Error(message);
   }
+
+    if (!isJson) {
+      throw new Error(
+        'Received an unexpected non-JSON response. Check that VITE_API_URL points to the API server.'
+      );
+    }
 
   return data;
 }
