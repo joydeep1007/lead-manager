@@ -11,7 +11,7 @@ Lead Manager is a full-stack web application that lets sales users create, view,
 | Frontend   | React 18 (Vite)              | Fast dev server/HMR and minimal config compared to CRA                |
 | Styling    | TailwindCSS v3                | Utility-first styling for rapid, consistent UI without a component lib |
 | Backend    | Node.js + Express             | Lightweight, unopinionated REST API framework                        |
-| Database   | SQLite via `better-sqlite3`   | Zero-config, file-based DB with a simple synchronous API — ideal for a small assignment-scale app |
+| Database   | SQLite via `better-sqlite3`   | Zero-config, file-based DB with a simple synchronous API  |
 | Auth       | `jsonwebtoken` + `bcrypt`     | Stateless token auth with industry-standard password hashing          |
 | Env config | `dotenv`                      | Standard way to keep secrets/config out of source code                |
 
